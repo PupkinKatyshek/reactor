@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import "./Task.css";
+import NewTaskForm from "../NewTaskForm/NewTaskForm";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 
@@ -19,7 +20,7 @@ export default class LiCompleted extends Component {
   render() {
     let classNames = "created";
     // let self = false;
-    const { label } = this.props;
+    const { label, onDeleted } = this.props;
     const { completed, checked } = this.state;
 
     if (completed) {
@@ -39,7 +40,7 @@ export default class LiCompleted extends Component {
             className="toggle"
             type="checkbox"
             checked={completed && checked}
-            onClick={this.onTaskClick}
+            onChange={this.onTaskClick}
           />
           <label>
             <span className="description" onClick={this.onTaskClick}>
@@ -48,7 +49,11 @@ export default class LiCompleted extends Component {
             <span className="created">{timeAgo}</span>
           </label>
           <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy"></button>
+          <button
+            className="icon icon-destroy"
+            type="button"
+            onClick={onDeleted}
+          ></button>
         </div>
       </li>
     );

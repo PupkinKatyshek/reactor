@@ -1,16 +1,24 @@
 //  Форма для добавления
 
-import React from "react";
+import React, { Component } from "react";
 import "./NewTaskForm.css";
+export default class NewTaskForm extends Component {
+  state = { label: "" };
+  newTask = (e) => {
+    console.log(e.target.value);
+    this.setState({ label: e.target.value });
+  };
 
-const NewTaskForm = () => {
-  return (
-    <input
-      className="new-todo"
-      placeholder="What needs to be done?"
-      autoFocus
-    />
-  );
-};
-
-export default NewTaskForm;
+  visual = (e) => {};
+  render() {
+    return (
+      <input
+        className="new-todo"
+        placeholder="ТЫЦ мышкой потом кнопками"
+        onChange={this.newTask}
+        autoFocus
+        onSubmit={this.visual}
+      />
+    );
+  }
+}
