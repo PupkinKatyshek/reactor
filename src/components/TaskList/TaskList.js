@@ -7,7 +7,7 @@ import TaskFilter from "../TasksFilter/TasksFilter";
 
 export default class TodoList extends Component {
   render() {
-    const { taski, onDeleted } = this.props;
+    const { taski, onDeleted, onToggle } = this.props;
 
     // console.log(onDeleted);
     return (
@@ -17,6 +17,9 @@ export default class TodoList extends Component {
             key={task.id}
             label={task.label}
             onDeleted={() => onDeleted(task.id)}
+            onToggle={() => onToggle(task.id)}
+            created={task.created}
+            completed={task.completed}
           />
         ))}
       </ul>
