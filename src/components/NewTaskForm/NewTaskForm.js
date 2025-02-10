@@ -4,20 +4,29 @@ import React, { Component } from "react";
 import "./NewTaskForm.css";
 export default class NewTaskForm extends Component {
   state = { label: "" };
+
   newTask = (e) => {
-    console.log(e.target.value);
     this.setState({ label: e.target.value });
   };
 
-  visual = (e) => {};
+  visual = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      // console.log(this.state.label);
+      this.props.addTask(this.state.label);
+      this.setState({ label: "" });
+    }
+  };
+
   render() {
     return (
       <input
         className="new-todo"
-        placeholder="ТЫЦ мышкой потом кнопками"
+        placeholder=' "ТЫЦ" мышкой потом кнопками'
         onChange={this.newTask}
+        onKeyDown={this.visual}
+        value={this.state.label}
         autoFocus
-        onSubmit={this.visual}
       />
     );
   }

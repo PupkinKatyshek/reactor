@@ -3,13 +3,12 @@
 import React, { Component } from "react";
 import LiCompleted from "../Task/Task";
 import "./TaskList.css";
-import TaskFilter from "../TasksFilter/TasksFilter";
+// import TaskFilter from "../TasksFilter/TasksFilter";
 
 export default class TodoList extends Component {
   render() {
     const { taski, onDeleted, onToggle } = this.props;
 
-    // console.log(onDeleted);
     return (
       <ul className="todo-list">
         {taski.map((task) => (

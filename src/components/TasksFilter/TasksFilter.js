@@ -8,13 +8,28 @@ export default class TaskFilter extends Component {
     return (
       <ul className="filters">
         <li>
-          <button className="selected">All</button>
+          <button
+            className={this.props.filter === "all" ? "selected" : ""}
+            onClick={() => this.props.setFilter("all")}
+          >
+            All
+          </button>
         </li>
         <li>
-          <button>Active</button>
+          <button
+            className={this.props.filter === "active" ? "selected" : ""}
+            onClick={() => this.props.setFilter("active")}
+          >
+            Active
+          </button>
         </li>
         <li>
-          <button>Completed</button>
+          <button
+            className={this.props.filter === "completed" ? "selected" : ""}
+            onClick={() => this.props.setFilter("completed")}
+          >
+            Completed
+          </button>
         </li>
       </ul>
     );

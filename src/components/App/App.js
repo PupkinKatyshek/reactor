@@ -9,12 +9,12 @@ import { ru } from "date-fns/locale";
 
 export default class App extends Component {
   state = {
-    toDoData: [
-      this.createTask("Ушел"),
-      this.createTask("Пошел"),
-      this.createTask("Пришел"),
-      this.createTask("Прошел"),
-    ],
+    toDoData: [],
+    filter: "all",
+  };
+
+  setFilter = (filter) => {
+    this.setState({ filter });
   };
 
   getRandomId(min, max) {
@@ -33,7 +33,7 @@ export default class App extends Component {
       label,
       completed: false,
       id: this.getRandomId(1, 100),
-      created: new Date(), // Сохраняем время создания как объект Date
+      created: new Date(),
     };
   }
 
@@ -44,24 +44,35 @@ export default class App extends Component {
 
   onToggle = (id) => {
     this.setState(({ toDoData }) => {
-      const idx = toDoData.findIndex((i) => i.id === id); // Используем findIndex
-      if (idx === -1) return; // Если задача не найдена, выходим из функции
+      const idx = toDoData.findIndex((i) => i.id === id);
+      if (idx === -1) return;
 
       const oldTask = toDoData[idx];
-      console.log(oldTask);
+      // console.log(oldTask);
       const newTask = { ...oldTask, completed: !oldTask.completed };
-      console.log(newTask);
+      // console.log(newTask);
       const newArray = [
         ...toDoData.slice(0, idx),
         newTask,
         ...toDoData.slice(idx + 1),
       ];
-      console.log(newArray);
+      // console.log(newArray);
       return { toDoData: newArray };
     });
   };
 
   render() {
+    const { filter, toDoData } = this.state;
+
+    const filteryemTasks = toDoData.filter((taska) => {
+      if (filter === "completed") return taska.completed;
+      if (filter === "active") return !taska.completed;
+      return true;
+    });
+
+    const completedTasks = this.state.toDoData.filter((task) => task.completed);
+    const completedCount = completedTasks.length;
+    console.log(completedTasks);
     return (
       <section className="todoapp">
         <AppHeadline />
@@ -70,7 +81,7 @@ export default class App extends Component {
         </header>
         <section className="main">
           <TodoList
-            taski={this.state.toDoData.map((task) => ({
+            taski={filteryemTasks.map((task) => ({
               ...task,
               created: formatDistanceToNow(task.created, {
                 addSuffix: true,
@@ -80,7 +91,11 @@ export default class App extends Component {
             onDeleted={this.deleteItem}
             onToggle={this.onToggle}
           />
-          <Footer />
+          <Footer
+            completedCount={completedCount}
+            setFilter={this.setFilter}
+            filter={filter}
+          />
         </section>
       </section>
     );
