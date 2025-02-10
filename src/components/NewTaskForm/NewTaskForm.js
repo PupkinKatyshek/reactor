@@ -2,8 +2,9 @@
 
 import React, { Component } from "react";
 import "./NewTaskForm.css";
+
 export default class NewTaskForm extends Component {
-  state = { label: "" };
+  state = { label: this.props.label || "" };
 
   newTask = (e) => {
     this.setState({ label: e.target.value });

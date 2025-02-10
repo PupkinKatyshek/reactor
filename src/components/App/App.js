@@ -37,6 +37,22 @@ export default class App extends Component {
     };
   }
 
+  updateTask = (id, newLabel) => {
+    // console.log(id, newLabel);
+    this.setState((prevState) => {
+      // console.log(prevState);
+      const updatedTasks = prevState.toDoData.map((task) => {
+        // Изменено на toDoData
+        if (task.id === id) {
+          return { ...task, label: newLabel }; // Обновляем задачу
+        }
+        return task;
+      });
+      // console.log(updatedTasks);
+      return { toDoData: updatedTasks }; // Изменено на toDoData
+    });
+  };
+
   deleteItem = (id) => {
     const updatedData = this.state.toDoData.filter((task) => task.id !== id);
     this.setState({ toDoData: updatedData });
@@ -69,10 +85,9 @@ export default class App extends Component {
       if (filter === "active") return !taska.completed;
       return true;
     });
-
     const completedTasks = this.state.toDoData.filter((task) => task.completed);
     const completedCount = completedTasks.length;
-    console.log(completedTasks);
+
     return (
       <section className="todoapp">
         <AppHeadline />
@@ -90,6 +105,7 @@ export default class App extends Component {
             }))}
             onDeleted={this.deleteItem}
             onToggle={this.onToggle}
+            updateTask={this.updateTask}
           />
           <Footer
             completedCount={completedCount}
