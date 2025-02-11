@@ -31,6 +31,7 @@
 
 .todo-list li .icon-destroy:after {
   content: "×";
+  /* position: relative; */
 }
 
 .todo-list li .icon-edit {
@@ -40,6 +41,8 @@
 
 .todo-list li .icon-edit:after {
   content: "✎";
+  position: relative;
+  bottom: 3px;
 }
 
 .todo-list li .icon {

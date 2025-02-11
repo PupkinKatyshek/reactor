@@ -38,23 +38,25 @@ export default class App extends Component {
   }
 
   updateTask = (id, newLabel) => {
-    // console.log(id, newLabel);
     this.setState((prevState) => {
-      // console.log(prevState);
       const updatedTasks = prevState.toDoData.map((task) => {
-        // Изменено на toDoData
         if (task.id === id) {
-          return { ...task, label: newLabel }; // Обновляем задачу
+          return { ...task, label: newLabel };
         }
         return task;
       });
-      // console.log(updatedTasks);
-      return { toDoData: updatedTasks }; // Изменено на toDoData
+
+      return { toDoData: updatedTasks };
     });
   };
 
   deleteItem = (id) => {
     const updatedData = this.state.toDoData.filter((task) => task.id !== id);
+    this.setState({ toDoData: updatedData });
+  };
+
+  deleteAllCompleted = () => {
+    const updatedData = this.state.toDoData.filter((task) => !task.completed);
     this.setState({ toDoData: updatedData });
   };
 
@@ -64,15 +66,15 @@ export default class App extends Component {
       if (idx === -1) return;
 
       const oldTask = toDoData[idx];
-      // console.log(oldTask);
+
       const newTask = { ...oldTask, completed: !oldTask.completed };
-      // console.log(newTask);
+
       const newArray = [
         ...toDoData.slice(0, idx),
         newTask,
         ...toDoData.slice(idx + 1),
       ];
-      // console.log(newArray);
+
       return { toDoData: newArray };
     });
   };
@@ -86,6 +88,7 @@ export default class App extends Component {
       return true;
     });
     const completedTasks = this.state.toDoData.filter((task) => task.completed);
+
     const completedCount = completedTasks.length;
 
     return (
@@ -111,6 +114,7 @@ export default class App extends Component {
             completedCount={completedCount}
             setFilter={this.setFilter}
             filter={filter}
+            deleteAllCompleted={this.deleteAllCompleted}
           />
         </section>
       </section>
