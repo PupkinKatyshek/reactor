@@ -1,21 +1,29 @@
-import React, { Component } from "react";
-import "./App.css";
-import AppHeadline from "../headline";
-import Footer from "../footer/Footer";
-import NewTaskForm from "../NewTaskForm/NewTaskForm";
-import TodoList from "../TaskList/TaskList";
-import { formatDistanceToNow } from "date-fns";
-import { ru } from "date-fns/locale";
+import React, { Component } from 'react';
+import './App.css';
+import { formatDistanceToNow } from 'date-fns';
+import { ru } from 'date-fns/locale';
+import AppHeadline from '../headline';
+import Footer from '../footer/Footer';
+import NewTaskForm from '../NewTaskForm/NewTaskForm';
+import TodoList from '../TaskList/TaskList';
 
 export default class App extends Component {
   state = {
     toDoData: [],
-    filter: "all",
+    filter: 'all',
   };
 
   setFilter = (filter) => {
     this.setState({ filter });
   };
+
+  componentDidMount() {
+    this.interval = setInterval(() => this.forceUpdate(), 60000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
   getRandomId(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
@@ -69,11 +77,7 @@ export default class App extends Component {
 
       const newTask = { ...oldTask, completed: !oldTask.completed };
 
-      const newArray = [
-        ...toDoData.slice(0, idx),
-        newTask,
-        ...toDoData.slice(idx + 1),
-      ];
+      const newArray = [...toDoData.slice(0, idx), newTask, ...toDoData.slice(idx + 1)];
 
       return { toDoData: newArray };
     });
@@ -83,8 +87,8 @@ export default class App extends Component {
     const { filter, toDoData } = this.state;
 
     const filteryemTasks = toDoData.filter((taska) => {
-      if (filter === "completed") return taska.completed;
-      if (filter === "active") return !taska.completed;
+      if (filter === 'completed') return taska.completed;
+      if (filter === 'active') return !taska.completed;
       return true;
     });
     const completedTasks = this.state.toDoData.filter((task) => task.completed);

@@ -1,30 +1,12 @@
 // Список задач
-
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import LiCompleted from "../Task/Task";
-import "./TaskList.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import LiCompleted from '../Task/Task';
+import './TaskList.css';
 
 export default class TodoList extends Component {
-  static propTypes = {
-    taski: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        label: PropTypes.string.isRequired,
-        created: PropTypes.string.isRequired,
-        completed: PropTypes.bool.isRequired,
-      })
-    ).isRequired,
-    onDeleted: PropTypes.func.isRequired,
-    onToggle: PropTypes.func.isRequired,
-    updateTask: PropTypes.func.isRequired,
-  };
-
   render() {
     const { taski, onDeleted, onToggle, updateTask } = this.props;
-
-    // Проверка на ошибки
-
     return (
       <div>
         <ul className="todo-list">
@@ -45,3 +27,17 @@ export default class TodoList extends Component {
     );
   }
 }
+
+TodoList.propTypes = {
+  taski: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+      created: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
+  onDeleted: PropTypes.func.isRequired,
+  onToggle: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
+};

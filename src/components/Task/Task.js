@@ -29,6 +29,7 @@ export default class LiCompleted extends Component {
       <li className={classNames}>
         <div className="view">
           <input
+            name="inpot"
             className="toggle"
             type="checkbox"
             checked={completed}
