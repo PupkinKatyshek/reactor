@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'; // Импорт PropTypes
+import PropTypes from 'prop-types';
 import './NewTaskForm.css';
 
 export default class NewTaskForm extends Component {
@@ -13,21 +13,21 @@ export default class NewTaskForm extends Component {
   };
 
   visual = (e) => {
-    const { label } = this.state; // Деструктуризация состояния
+    const { label } = this.state;
     if (e.key === 'Enter') {
       e.preventDefault();
       if (label.trim().length <= 1) {
         this.setState({ error: 'Задача - это БОЛЕЕ одного символа' });
         return;
       }
-      const { addTask } = this.props; // Деструктуризация пропсов
+      const { addTask } = this.props;
       addTask(label);
       this.setState({ label: '' });
     }
   };
 
   render() {
-    const { label, error } = this.state; // Деструктуризация состояния
+    const { label, error } = this.state;
     return (
       <div className="input-container">
         {error && <div className="error-message">{error}</div>}
@@ -38,15 +38,17 @@ export default class NewTaskForm extends Component {
           onChange={this.newTask}
           onKeyDown={this.visual}
           value={label}
-          autoFocus // Можно оставить, если это необходимо, но учтите предупреждение
         />
       </div>
     );
   }
 }
 
-// Валидация пропсов
 NewTaskForm.propTypes = {
   label: PropTypes.string,
   addTask: PropTypes.func.isRequired,
+};
+
+NewTaskForm.defaultProps = {
+  label: '',
 };

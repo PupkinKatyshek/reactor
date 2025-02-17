@@ -17,14 +17,14 @@ module.exports = {
   },
   parserOptions: {
     ecmaFeatures: {
-      jsx: true, // Включение поддержки JSX
+      jsx: true,
     },
     ecmaVersion: 12,
     sourceType: 'module',
   },
   settings: {
     react: {
-      version: 'detect', // Автоматическое определение версии React
+      version: 'detect',
     },
     'import/resolver': {
       node: {

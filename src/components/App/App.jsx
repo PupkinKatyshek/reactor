@@ -2,20 +2,27 @@ import React, { Component } from 'react';
 import './App.css';
 import { formatDistanceToNow } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import AppHeadline from '../headline';
 import Footer from '../footer/Footer';
 import NewTaskForm from '../NewTaskForm/NewTaskForm';
 import TodoList from '../TaskList/TaskList';
 
 export default class App extends Component {
-  state = {
-    toDoData: [],
-    filter: 'all',
-  };
+  static createTask(label) {
+    return {
+      label,
+      completed: false,
+      id: App.getRandomId(1, 100),
+      created: new Date(),
+    };
+  }
 
-  setFilter = (filter) => {
-    this.setState({ filter });
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      toDoData: [],
+      filter: 'all',
+    };
+  }
 
   componentDidMount() {
     this.interval = setInterval(() => this.forceUpdate(), 60000);
@@ -25,25 +32,19 @@ export default class App extends Component {
     clearInterval(this.interval);
   }
 
-  getRandomId(min, max) {
+  setFilter = (filter) => {
+    this.setState({ filter });
+  };
+
+  static getRandomId(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   }
 
-  addTask = (text) => {
-    const newTask = this.createTask(text);
-    this.setState(({ toDoData }) => ({
-      toDoData: [...toDoData, newTask],
+  deleteItem = (id) => {
+    this.setState((prevState) => ({
+      toDoData: prevState.toDoData.filter((task) => task.id !== id),
     }));
   };
-
-  createTask(label) {
-    return {
-      label,
-      completed: false,
-      id: this.getRandomId(1, 100),
-      created: new Date(),
-    };
-  }
 
   updateTask = (id, newLabel) => {
     this.setState((prevState) => {
@@ -58,26 +59,28 @@ export default class App extends Component {
     });
   };
 
-  deleteItem = (id) => {
-    const updatedData = this.state.toDoData.filter((task) => task.id !== id);
-    this.setState({ toDoData: updatedData });
+  addTask = (text) => {
+    const newTask = App.createTask(text); // Используем статический метод
+    this.setState((prevState) => ({
+      toDoData: [...prevState.toDoData, newTask],
+    }));
   };
 
   deleteAllCompleted = () => {
-    const updatedData = this.state.toDoData.filter((task) => !task.completed);
-    this.setState({ toDoData: updatedData });
+    this.setState((prevState) => ({
+      toDoData: prevState.toDoData.filter((task) => !task.completed),
+    }));
   };
 
   onToggle = (id) => {
-    this.setState(({ toDoData }) => {
-      const idx = toDoData.findIndex((i) => i.id === id);
-      if (idx === -1) return;
+    this.setState((prevState) => {
+      const idx = prevState.toDoData.findIndex((i) => i.id === id);
+      if (idx === -1) return null;
 
-      const oldTask = toDoData[idx];
-
+      const oldTask = prevState.toDoData[idx];
       const newTask = { ...oldTask, completed: !oldTask.completed };
 
-      const newArray = [...toDoData.slice(0, idx), newTask, ...toDoData.slice(idx + 1)];
+      const newArray = [...prevState.toDoData.slice(0, idx), newTask, ...prevState.toDoData.slice(idx + 1)];
 
       return { toDoData: newArray };
     });
@@ -91,13 +94,13 @@ export default class App extends Component {
       if (filter === 'active') return !taska.completed;
       return true;
     });
-    const completedTasks = this.state.toDoData.filter((task) => task.completed);
 
+    const completedTasks = toDoData.filter((task) => task.completed);
     const completedCount = completedTasks.length;
 
     return (
       <section className="todoapp">
-        <AppHeadline />
+        <h1>todos</h1>
         <header className="header">
           <NewTaskForm addTask={this.addTask} />
         </header>

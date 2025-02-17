@@ -1,8 +1,8 @@
 // Одна задача
 
-import React, { Component } from "react";
-import "./Task.css";
-import NewTaskForm from "../NewTaskForm/NewTaskForm";
+import React, { Component } from 'react';
+import './Task.css';
+import NewTaskForm from '../NewTaskForm/NewTaskForm';
 // import { formatDistanceToNow } from "date-fns";
 // import { ru } from "date-fns/locale";
 
@@ -17,24 +17,18 @@ export default class LiCompleted extends Component {
   };
 
   render() {
-    let classNames = "created";
+    let classNames = 'created';
     const { label, onDeleted, onToggle, completed, created } = this.props;
     const { redact } = this.state;
     // console.log(completed);
     if (completed) {
-      classNames += " completed";
+      classNames += ' completed';
     }
 
     return (
       <li className={classNames}>
         <div className="view">
-          <input
-            name="inpot"
-            className="toggle"
-            type="checkbox"
-            checked={completed}
-            onChange={onToggle}
-          />
+          <input name="inpot" className="toggle" type="checkbox" checked={completed} onChange={onToggle} />
           {redact ? (
             <NewTaskForm
               label={label}
@@ -48,15 +42,8 @@ export default class LiCompleted extends Component {
               <span className="created"> {created} </span>
             </label>
           )}
-          <button
-            className="icon icon-edit"
-            onClick={this.toggleRedact}
-          ></button>
-          <button
-            className="icon icon-destroy"
-            type="button"
-            onClick={onDeleted}
-          ></button>
+          <button className="icon icon-edit" onClick={this.toggleRedact}></button>
+          <button className="icon icon-destroy" type="button" onClick={onDeleted}></button>
         </div>
       </li>
     );
