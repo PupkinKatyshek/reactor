@@ -1,34 +1,49 @@
-//  Фильтры в футере
+// Фильтры в футере
 
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import './TasksFilter.css';
 
-export default class TaskFilter extends Component {
-  render() {
-    return (
-      <ul className="filters">
-        <li>
-          <button className={this.props.filter === 'all' ? 'selected' : ''} onClick={() => this.props.setFilter('all')}>
-            All
-          </button>
-        </li>
-        <li>
-          <button
-            className={this.props.filter === 'active' ? 'selected' : ''}
-            onClick={() => this.props.setFilter('active')}
-          >
-            Active
-          </button>
-        </li>
-        <li>
-          <button
-            className={this.props.filter === 'completed' ? 'selected' : ''}
-            onClick={() => this.props.setFilter('completed')}
-          >
-            Completed
-          </button>
-        </li>
-      </ul>
-    );
-  }
+function TaskFilter({ filter, setFilter }) {
+  return (
+    <ul className="filters">
+      <li>
+        <button
+          className={filter === 'all' ? 'selected' : ''}
+          onClick={() => setFilter('all')}
+          aria-label="Show all tasks"
+          type="button"
+        >
+          All
+        </button>
+      </li>
+      <li>
+        <button
+          className={filter === 'active' ? 'selected' : ''}
+          onClick={() => setFilter('active')}
+          aria-label="Show active tasks"
+          type="button"
+        >
+          Active
+        </button>
+      </li>
+      <li>
+        <button
+          className={filter === 'completed' ? 'selected' : ''}
+          onClick={() => setFilter('completed')}
+          aria-label="Show completed tasks"
+          type="button"
+        >
+          Completed
+        </button>
+      </li>
+    </ul>
+  );
 }
+
+TaskFilter.propTypes = {
+  filter: PropTypes.string.isRequired,
+  setFilter: PropTypes.func.isRequired,
+};
+
+export default TaskFilter;
