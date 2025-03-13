@@ -15,6 +15,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.new-todo-form__timer {
+  box-sizing: border-box;
+  line-height: 1.4em;
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  width: 15%;
+  font-size: 24px;
+  margin: 0;
+  position: relative;
+  padding: 16px 16px 16px 0px;
+  border: none;
+  background: rgba(0, 0, 0, 0.003);
+  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+}
+
 .new-todo {
   display: flex;
   padding: 16px 16px 16px 60px;
@@ -29,12 +45,16 @@
 }
 
 .error-message {
+  line-height: 1.4em;
+  color: inherit;
+  font-family: cursive;
+  font-weight: inherit;
   position: absolute;
   top: 11px;
   left: 100px;
   display: flex;
-  color: red;
+  color: darkblue;
   padding: 12px 0px 0px 30px;
-  font-size: 14px;
+  /* font-size: 14px; */
   white-space: nowrap;
 }

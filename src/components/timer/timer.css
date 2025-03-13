@@ -1,0 +1,24 @@
+.icon-pause:after {
+  position: relative;
+  content: '⏸';
+  right: 33px;
+  top: 13px;
+}
+
+.icon-play:after {
+  content: '▶';
+  position: relative;
+  right: 55px;
+  top: 15px;
+}
+
+.icon-play:after,
+.icon-pause:after {
+  font-size: 20px;
+}
+
+.timer-display {
+  position: relative;
+  left: -95px;
+  top: 20px;
+}

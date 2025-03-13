@@ -7,12 +7,17 @@ import NewTaskForm from '../NewTaskForm/NewTaskForm';
 import TodoList from '../TaskList/TaskList';
 
 export default class App extends Component {
-  static createTask(label) {
+  static createTask(label, minutes, seconds) {
     return {
       label,
       completed: false,
       id: App.getRandomId(1, 100),
       created: new Date(),
+      timer: {
+        minutes: minutes || 0,
+        seconds: seconds || 0,
+        isActive: false,
+      },
     };
   }
 
@@ -25,7 +30,14 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.forceUpdate(), 60000);
+    this.interval = setInterval(() => {
+      const { toDoData } = this.state;
+      toDoData.forEach((task) => {
+        if (task.timer.isActive) {
+          this.updateTimer(task.id);
+        }
+      });
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -59,8 +71,8 @@ export default class App extends Component {
     });
   };
 
-  addTask = (text) => {
-    const newTask = App.createTask(text); // Используем статический метод
+  addTask = (text, minutes, seconds) => {
+    const newTask = App.createTask(text, minutes, seconds);
     this.setState((prevState) => ({
       toDoData: [...prevState.toDoData, newTask],
     }));
@@ -86,6 +98,76 @@ export default class App extends Component {
     });
   };
 
+  startTimer = (id) => {
+    this.setState((prevState) => {
+      const updatedTasks = prevState.toDoData.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            timer: {
+              ...task.timer,
+              isActive: true,
+            },
+          };
+        }
+        return task;
+      });
+
+      return { toDoData: updatedTasks };
+    });
+  };
+
+  stopTimer = (id) => {
+    this.setState((prevState) => {
+      const updatedTasks = prevState.toDoData.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            timer: {
+              ...task.timer,
+              isActive: false,
+            },
+          };
+        }
+        return task;
+      });
+
+      return { toDoData: updatedTasks };
+    });
+  };
+
+  updateTimer = (id) => {
+    this.setState((prevState) => {
+      const updatedTasks = prevState.toDoData.map((task) => {
+        if (task.id === id && task.timer.isActive) {
+          let { minutes, seconds } = task.timer;
+
+          if (seconds === 0) {
+            if (minutes === 0) {
+              return task;
+            }
+            minutes -= 1;
+            seconds = 59;
+          } else {
+            seconds -= 1;
+          }
+
+          return {
+            ...task,
+            timer: {
+              ...task.timer,
+              minutes,
+              seconds,
+            },
+          };
+        }
+        return task;
+      });
+
+      return { toDoData: updatedTasks };
+    });
+  };
+
   render() {
     const { filter, toDoData } = this.state;
 
@@ -95,7 +177,7 @@ export default class App extends Component {
       return true;
     });
 
-    const completedTasks = toDoData.filter((task) => task.completed);
+    const completedTasks = toDoData.filter((task) => !task.completed);
     const completedCount = completedTasks.length;
 
     return (
@@ -116,6 +198,9 @@ export default class App extends Component {
             onDeleted={this.deleteItem}
             onToggle={this.onToggle}
             updateTask={this.updateTask}
+            startTimer={this.startTimer}
+            stopTimer={this.stopTimer}
+            updateTimer={this.updateTimer}
           />
           <Footer
             completedCount={completedCount}

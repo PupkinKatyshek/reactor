@@ -14,11 +14,14 @@
   transition: color 0.4s;
   font-weight: 400;
   color: #4d4d4d;
+  width: 150px;
 }
 
 .todo-list li label .created {
+  position: relative;
   font-size: 13px;
   color: gray;
+  top: -5px;
 }
 
 .todo-list li .icon:hover {
@@ -31,7 +34,9 @@
 
 .todo-list li .icon-destroy:after {
   content: '×';
-  /* position: relative; */
+  position: relative;
+  bottom: 5px;
+  font-size: 20px;
 }
 
 .todo-list li .icon-edit {
@@ -40,9 +45,10 @@
 }
 
 .todo-list li .icon-edit:after {
+  font-size: 20px;
   content: '✎';
   position: relative;
-  bottom: 3px;
+  bottom: 5px;
 }
 
 .todo-list li .icon {
