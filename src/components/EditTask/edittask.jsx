@@ -1,42 +1,36 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './edittask.css';
 
-export default class EditTaskForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { label: props.label || '', error: '' };
-  }
+function EditTaskForm({ label, onSubmit }) {
+  const [taskLabel, setTaskLabel] = useState(label || '');
+  const [error, setError] = useState('');
 
-  handleChange = (e) => {
-    this.setState({ label: e.target.value, error: '' });
+  const handleChange = (e) => {
+    setTaskLabel(e.target.value);
+    setError('');
   };
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const { label } = this.state;
-    const { onSubmit } = this.props;
-    if (label.trim().length <= 1) {
-      this.setState({ error: 'Задача - это БОЛЕЕ одного символа' });
+    if (taskLabel.trim().length <= 1) {
+      setError('Задача - это БОЛЕЕ одного символа');
       return;
     }
-    onSubmit(label);
+    onSubmit(taskLabel);
   };
 
-  render() {
-    const { label, error } = this.state;
-    return (
-      <div className="edit-task-container">
-        {error && <div className="error-message">{error}</div>}
-        <input
-          className="edit-task-input"
-          value={label}
-          onChange={this.handleChange}
-          onKeyDown={(e) => e.key === 'Enter' && this.handleSubmit(e)}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="edit-task-container">
+      {error && <div className="error-message">{error}</div>}
+      <input
+        className="edit-task-input"
+        value={taskLabel}
+        onChange={handleChange}
+        onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
+      />
+    </div>
+  );
 }
 
 EditTaskForm.propTypes = {
@@ -47,3 +41,5 @@ EditTaskForm.propTypes = {
 EditTaskForm.defaultProps = {
   label: '',
 };
+
+export default EditTaskForm;

@@ -1,59 +1,62 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './NewTaskForm.css';
 
-export default class NewTaskForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { label: props.label || '', minutes: '', seconds: '', error: '' };
-  }
+function NewTaskForm({ label: initialLabel = '', addTask }) {
+  const [label, setLabel] = useState(initialLabel);
+  const [minutes, setMinutes] = useState('');
+  const [seconds, setSeconds] = useState('');
+  const [error, setError] = useState('');
 
-  newTask = (e) => {
-    this.setState({ label: e.target.value, error: '' });
+  const newTask = (e) => {
+    setLabel(e.target.value);
+    setError('');
   };
 
-  handleMinutesChange = (e) => {
-    this.setState({ minutes: e.target.value });
-  };
-
-  handleSecondsChange = (e) => {
-    this.setState({ seconds: e.target.value });
-  };
-
-  visual = (e) => {
-    const { label, minutes, seconds } = this.state;
-
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (label.trim().length <= 1) {
-        this.setState({ error: 'Задача - это БОЛЕЕ одного символа' });
-        return;
-      }
-      const { addTask } = this.props;
-      addTask(label, parseInt(minutes, 10), parseInt(seconds, 10));
-
-      this.setState({ label: '', minutes: '', seconds: '' });
+  const handleMinutesChange = (e) => {
+    const { value } = e.target;
+    if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 59)) {
+      setMinutes(value);
     }
   };
 
-  render() {
-    const { label, minutes, seconds, error } = this.state;
-    return (
-      <div className="input-container">
-        {error && <div className="error-message">{error}</div>}
-        <input
-          name="upInpot"
-          className="new-todo"
-          placeholder='"ТЫЦ"'
-          onChange={this.newTask}
-          onKeyDown={this.visual}
-          value={label}
-        />
-        <input className="new-todo-form__timer" placeholder="Min" value={minutes} onChange={this.handleMinutesChange} />
-        <input className="new-todo-form__timer" placeholder="Sec" value={seconds} onChange={this.handleSecondsChange} />
-      </div>
-    );
-  }
+  const handleSecondsChange = (e) => {
+    const { value } = e.target;
+    if (value === '' || (parseInt(value, 10) >= 0 && parseInt(value, 10) <= 59)) {
+      setSeconds(value);
+    }
+  };
+
+  const visual = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (label.trim().length <= 1) {
+        setError('Задача - это БОЛЕЕ одного символа');
+        return;
+      }
+      addTask(label, parseInt(minutes, 10), parseInt(seconds, 10));
+
+      setLabel('');
+      setMinutes('');
+      setSeconds('');
+    }
+  };
+
+  return (
+    <div className="input-container">
+      {error && <div className="error-message">{error}</div>}
+      <input
+        name="upInpot"
+        className="new-todo"
+        placeholder='"ТЫЦ"'
+        onChange={newTask}
+        onKeyDown={visual}
+        value={label}
+      />
+      <input className="new-todo-form__timer" placeholder="Min" value={minutes} onChange={handleMinutesChange} />
+      <input className="new-todo-form__timer" placeholder="Sec" value={seconds} onChange={handleSecondsChange} />
+    </div>
+  );
 }
 
 NewTaskForm.propTypes = {
@@ -64,3 +67,5 @@ NewTaskForm.propTypes = {
 NewTaskForm.defaultProps = {
   label: '',
 };
+
+export default NewTaskForm;
